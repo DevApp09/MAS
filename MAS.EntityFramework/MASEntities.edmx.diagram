@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f813a73fc21d4b069d9adf4332c0f5fa" Name="Diagram1">
+        <EntityTypeShape EntityType="MASModel.Category" Width="1.5" PointX="0.75" PointY="10.125" />
+        <EntityTypeShape EntityType="MASModel.Condition" Width="1.5" PointX="8" PointY="15.125" />
+        <EntityTypeShape EntityType="MASModel.Knowledge" Width="1.5" PointX="10" PointY="1" />
+        <EntityTypeShape EntityType="MASModel.KnowledgeType" Width="1.5" PointX="7.75" PointY="1.375" />
+        <EntityTypeShape EntityType="MASModel.MeetingAgenda" Width="1.5" PointX="17.25" PointY="10.625" />
+        <EntityTypeShape EntityType="MASModel.MeetingAttendee" Width="1.5" PointX="17.25" PointY="1.5" />
+        <EntityTypeShape EntityType="MASModel.MeetingFollowup" Width="1.5" PointX="17.25" PointY="5.375" />
+        <EntityTypeShape EntityType="MASModel.MeetingOccurance" Width="1.5" PointX="12.75" PointY="6.625" />
+        <EntityTypeShape EntityType="MASModel.Meeting" Width="1.5" PointX="15" PointY="6.25" />
+        <EntityTypeShape EntityType="MASModel.QuestionCondition" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MASModel.QuestionOption" Width="1.5" PointX="10.25" PointY="14.625" />
+        <EntityTypeShape EntityType="MASModel.Question" Width="1.5" PointX="8" PointY="9" />
+        <EntityTypeShape EntityType="MASModel.QuestionType" Width="1.5" PointX="5.75" PointY="2.125" />
+        <EntityTypeShape EntityType="MASModel.SurveyAssignee" Width="1.5" PointX="5.25" PointY="13.625" />
+        <EntityTypeShape EntityType="MASModel.SurveyAssignment" Width="1.5" PointX="5.25" PointY="9.75" />
+        <EntityTypeShape EntityType="MASModel.SurveyQuestion" Width="1.5" PointX="10.25" PointY="8.25" />
+        <EntityTypeShape EntityType="MASModel.Survey" Width="1.5" PointX="3" PointY="9.625" />
+        <EntityTypeShape EntityType="MASModel.SurveySection" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="MASModel.SurveySubmission" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MASModel.User" Width="1.5" PointX="12.75" PointY="10.75" />
+        <AssociationConnector Association="MASModel.FK_Questions_Categories" />
+        <AssociationConnector Association="MASModel.FK_Surveys_Categories" />
+        <AssociationConnector Association="MASModel.FK_Conditions_QuestionTypes" />
+        <AssociationConnector Association="MASModel.FK_Knowledges_KnowledgeTypes" />
+        <AssociationConnector Association="MASModel.FK_MeetingAgendas_Meetings" />
+        <AssociationConnector Association="MASModel.FK_MeetingAttendees_Meetings" />
+        <AssociationConnector Association="MASModel.FK_MeetingFollowups_Meetings" />
+        <AssociationConnector Association="MASModel.FK_Meetings_MeetingOccurances" />
+        <AssociationConnector Association="MASModel.FK_QuestionOptions_Questions" />
+        <AssociationConnector Association="MASModel.FK_Questions_QuestionTypes" />
+        <AssociationConnector Association="MASModel.FK_SurveyQuestions_Questions" />
+        <AssociationConnector Association="MASModel.FK_SurveyAssignees_Surveys" />
+        <AssociationConnector Association="MASModel.FK_SurveyAssignments_Surveys" />
+        <AssociationConnector Association="MASModel.FK_SurveyQuestions_Surveys" />
+        <AssociationConnector Association="MASModel.FK_SurveyQuestions_SurveySections" />
+        <AssociationConnector Association="MASModel.FK_SurveySections_Surveys" />
+        <EntityTypeShape EntityType="MASModel.QuestionTypeFormat" Width="1.5" PointX="0.75" PointY="6.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

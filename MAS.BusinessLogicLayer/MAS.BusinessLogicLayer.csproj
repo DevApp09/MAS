@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8CA5E320-96F8-45E3-8B56-9BC64A3B7F5B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MAS.BusinessLogicLayer</RootNamespace>
+    <AssemblyName>MAS.BusinessLogicLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\ReferenceDLL\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="ConditionBLL.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Contract\IConditionBLL.cs" />
+    <Compile Include="Contract\IConfiguration.cs" />
+    <Compile Include="Contract\IKnowledgeBLL.cs" />
+    <Compile Include="Contract\IKnowledgeTypeBLL.cs" />
+    <Compile Include="Contract\IMeetingBLL.cs" />
+    <Compile Include="Contract\IMeetingOccuranceBLL.cs" />
+    <Compile Include="Contract\ISurveyAssignmentBLL.cs" />
+    <Compile Include="Contract\ISurveyBLL.cs" />
+    <Compile Include="Contract\IUserBLL.cs" />
+    <Compile Include="KnowledgeBLL.cs" />
+    <Compile Include="KnowledgeTypeBLL.cs" />
+    <Compile Include="MeetingBLL.cs" />
+    <Compile Include="MeetingOccuranceBLL.cs" />
+    <Compile Include="QuestionBLL.cs" />
+    <Compile Include="QuestionOptionBLL.cs" />
+    <Compile Include="QuestionTypeBLL.cs" />
+    <Compile Include="CategoryBLL.cs" />
+    <Compile Include="Contract\IQuestionOptionBLL.cs" />
+    <Compile Include="Contract\IQuestionBLL.cs" />
+    <Compile Include="Contract\IQuestionTypeBLL.cs" />
+    <Compile Include="Contract\ICategoryBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SurveyAssignmentBLL.cs" />
+    <Compile Include="SurveyBLL.cs" />
+    <Compile Include="ThreadSafe.cs" />
+    <Compile Include="UserBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MAS.Authentications\MAS.Authentications.csproj">
+      <Project>{38539836-9DEA-438D-A75E-E4512EC41CBB}</Project>
+      <Name>MAS.Authentications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MAS.DataAccessLayer\MAS.DataAccessLayer.csproj">
+      <Project>{aa64b080-62d9-46fd-a704-827d47fb61d6}</Project>
+      <Name>MAS.DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MAS.DataTransferObject\MAS.DataTransferObject.csproj">
+      <Project>{4E72FA7A-D171-4438-A50C-47B2B35048A7}</Project>
+      <Name>MAS.DataTransferObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MAS.EntityFramework\MAS.EntityFramework.csproj">
+      <Project>{3acc43e8-b808-4903-aeff-8c765f4296fd}</Project>
+      <Name>MAS.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MAS.Exceptions\MAS.Exceptions.csproj">
+      <Project>{b8a05afd-6565-4a11-b508-343f16abd94f}</Project>
+      <Name>MAS.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MAS.InversionOfControl\MAS.InversionOfControl.csproj">
+      <Project>{51e37741-9aea-45eb-8770-9f3594b997e1}</Project>
+      <Name>MAS.InversionOfControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

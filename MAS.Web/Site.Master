@@ -1,0 +1,298 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="MAS.Web.Site" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Monitoring and Accountability System</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/jQueryUI/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+    <link href="css/plugins/jqGrid/ui.jqgrid.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/customstyle.css" rel="stylesheet" />
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <%--<script src="js/jquery-2.1.1.js"></script>--%>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.7/dist/jquery.inputmask.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <%--<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>--%>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+    <script src="js/plugins/select2/select2.full.min.js"></script>
+    <script src="js/jquery.tmpl.min.js"></script>
+    <script src="js/plugins/fullcalendar/moment.min.js"></script>
+    <%--<script src="js/Plugins/ContextMenu/jquery.contextmenu.r2.js"></script>--%>
+    <script src="js/FormScripts/Menu.js"></script>
+    <script src="js/linq.min.js"></script>
+    <script src="js/FormScripts/JQueryExtension.js"></script>
+
+    <style>
+        .select2-container {
+            z-index: 2050;
+        }
+
+        .wrapper .select2-container {
+            z-index: 0;
+        }
+    </style>
+
+    <script>
+        var currentUserRole = "";
+        var UserBranchData;
+        var defaultBranchID;
+
+        $(document).ready(function () {
+            //$("#txtUserName").text("User Name");
+            $('div.page-heading').hide();
+            $('.navbar-minimalize').on('click', function () {
+                if ($('.nav-footer').is(':visible')) {
+                    $('.nav-footer').hide();
+                }
+                else {
+                    $('.nav-footer').show();
+                }
+            });
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            $('#btnLogout').click(function () {
+                //$("#ddlcompany option").each(function (i, e) {
+                //    localStorage.removeItem("menu" + $(e).attr('value'));
+                //});
+                localStorage.removeItem("menu");
+                document.cookie = 'Token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                window.location.assign("<%=ConfigurationManager.AppSettings["LoginPage"]%>");
+            });
+            var url = window.location.href;
+        });
+
+        $(document).ajaxError(function (event, request, settings) {
+            if (settings.url.search('aspx?') > 1 && settings.url.search('Default') < 0 && request.status == 404) {
+                window.location = '/MAS/Default.aspx';
+            }
+        });
+    </script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="fixed-sidebar">
+    <div class="form-horizontal" id="formValues">
+        <div id="wrapper">
+            <%--Loading panel HTML start--%>
+            <div class="app-modal" style="display: none;">
+                <div class="app-center">
+                    <div class="sk-spinner sk-spinner-wave">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                    Please wait while system is processing your request ...
+                </div>
+            </div>
+
+            <%--Message box panel HTML start--%>
+            <a id="msgDivBtn" class="btn btn-primary" data-toggle="modal" data-target="#msgBox" data-backdrop="static" data-keyboard="false" href="#" style="display: none;"></a>
+            <div class="modal fade" id="msgBox" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="titleSpan"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <table cellspacing="10">
+                                <tr>
+                                    <td>
+                                        <i id="msgBoxImg" class="" aria-hidden="true" style="margin: 10px"></i>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span id="msgSpan" style="margin: 10px"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="popupAcptBtn" type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+                            <button id="popupCnclBtn" type="button" class="btn btn-secondary" data-dismiss="modal" style="display: none">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%--Message box panel HTML end--%>
+
+            <div id="clsNavDiv">
+                <nav class="navbar-default navbar-static-side clsNavDiv" role="navigation">
+                    <div class="sidebar-collapse" id="divMenu">
+                        <ul class="nav metismenu" id="side-menu">
+                            <li class="nav-header">
+                                <div class="dropdown profile-element cls-logo-center">
+                                    <%--<img alt="image" id="companyImage" src="img/a51.jpg" width="100" height="120" />--%>
+                                </div>
+                                <div class="logo-element">
+                                    MAS
+                                </div>
+                            </li>
+                            <li>
+                                <a href="Default.aspx"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
+                                <a href="Survey.aspx?c=1"><i class="fa fa-th-large"></i> <span class="nav-label">Research</span></a>
+                                <a href="Survey.aspx?c=2"><i class="fa fa-th-large"></i> <span class="nav-label">Monitorying</span></a>
+                                <a href="Survey.aspx?c=3"><i class="fa fa-th-large"></i> <span class="nav-label">Progress</span></a>
+                            </li>
+                            <%--<li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Research</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="Question.aspx">Question Configuration</a></li>
+                                    <li><a href="Survey.aspx">Servey</a></li>
+                                    <li><a href="SurveyAssignment.aspx">Validation</a></li>
+                                    <li><a href="SurveySubmit.aspx">Tools</a></li>
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Monitorin</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="Question.aspx">Question Configuration</a></li>
+                                    <li><a href="Survey.aspx">Checklist Development</a></li>
+                                    <li><a href="SurveyAssignment.aspx">Enumerator Profile & Deployment</a></li>
+                                    <li><a href="SurveySubmit.aspx">Data Collection</a></li>
+                                </ul>
+                            </li>--%>
+                            <%--<li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Monitoring Supervisory</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="Question.aspx">Question Configuration</a></li>
+                                    <li><a href="Survey.aspx">Checklist Development</a></li>
+                                    <li><a href="SurveyAssignment.aspx">Checklist Deployment</a></li>
+                                    <li><a href="SurveySubmit.aspx">Monitoring Visit</a></li>
+                                </ul>
+                            </li>--%>
+                            <%--<li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Progress Report</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="Question.aspx">Question Configuration</a></li>
+                                    <li><a href="Survey.aspx">Format Development</a></li>
+                                    <li><a href="SurveyAssignment.aspx">Template Deployment</a></li>
+                                    <li><a href="SurveySubmit.aspx">Report Writing</a></li>
+                                </ul>
+                            </li>--%>
+                            <%--<li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Meeting</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="Meeting.aspx">Meeting</a></li>
+                                </ul>
+                            </li>--%>
+                            <%--<li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Knowledge Management</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="Knowledge.aspx">Knowledge Management</a></li>
+                                </ul>
+                            </li>--%>
+                            <%--<li class="">
+                                <a href="#" aria-expanded="false"><i class="fa fa-th-large"></i> <span class="nav-label">Report</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="#">Report 1</a></li>
+                                </ul>
+                            </li>--%>
+                        </ul>
+                    </div>
+                    <div class="nav-footer">
+                        <div class="has-feedback" style="color: white;">
+                            <input type="text" id="txtSearchMenu" class="form-control input-sm cls-search-menu" onkeyup="filterMenu(event)" placeholder="search here" />
+                            <span class="glyphicon glyphicon-search form-control-feedback" style="text-align: right !important;"></span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="page-wrapper" class="gray-bg dashbard-1">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i></a>
+                            <div id="menuNavigation" class="minimalize-styl-2">
+                                <ol class="breadcrumb">
+                                </ol>
+                            </div>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <img src="img/menu/seprator.png" />
+                            </li>
+                            <li class="dropdown dropdown-user">
+                                <a style="display: inline !important; margin-top: 2px;" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                                    <img alt="" class="img-circle" id="userImage" src="img/a51.jpg" width="45" height="45" />
+                                    <span id="txtUserName" class="username username-hide-on-mobile">User Name</span>
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-default">
+                                    <li>
+                                        <a id="btnLogout">
+                                            <i class="fa fa-sign-out"></i>Log out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <%-- <div id="right-sidebar" class="sidebar-open" style="display: none;">
+                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                        <div class="sidebar-container notificationText" style="overflow: auto; width: auto; height: 100%;">
+                        </div>
+                        <div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 821.4px;"></div>
+                        <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.4; z-index: 90; right: 1px;"></div>
+                    </div>
+                </div>--%>
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+                <%--FOOTER--%>
+                <div class="footer fixed">
+                    <div class="pull-right">
+                        Powered by <strong>S4B Technologies</strong>
+                    </div>
+                    <div>
+                        <strong>Monitoring and Accountability System</strong>
+                    </div>
+                </div>
+                <%--FOOTER--%>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
