@@ -226,8 +226,14 @@ namespace MAS.BusinessLogicLayer
 
         public long SaveSingleAssignee(long surveyId, int userId, int roleId)
         {
-            var exists = _unitOfWork.SurveyAssigneeRepository.GetMany(x => x.SurveyID == surveyId && x.AssigneeID == userId && x.RoleID == roleId).Any();
+            //var exists = _unitOfWork.SurveyAssigneeRepository.GetMany(x => x.SurveyID == surveyId && x.AssigneeID == userId && x.RoleID == roleId).Any();
 
+            //if (exists && roleId != 1)
+            //{
+            //    throw new BLLException("This user is already assigned to this role for this survey.");
+            //}
+
+            var exists = _unitOfWork.SurveySubmissionRepository.IsRoleAssigned(surveyId, userId, roleId);
             if (exists && roleId != 1)
             {
                 throw new BLLException("This user is already assigned to this role for this survey.");

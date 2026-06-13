@@ -20,5 +20,12 @@ namespace MAS.DataAccessLayer
                         select ss.SurveySubmissionID).Any();
             return data;
         }
+        public bool IsRoleAssigned(long surveyId, int userId, int roleId)
+        {
+            var data = (from sa in _context.SurveyAssignees.AsQueryable()
+                        where sa.SurveyID == surveyId && sa.AssigneeID == userId && sa.RoleID == roleId
+                        select sa.SurveyAssigneeID).Any();
+            return data;
+        }
     }
 }
